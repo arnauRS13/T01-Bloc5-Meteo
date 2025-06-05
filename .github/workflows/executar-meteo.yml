@@ -31,5 +31,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add temp_*.json
-          git commit -m "Afegit arxiu de temperatura diària"
-          git push
+          git commit -m "Afegit arxiu de temperatura diària" || echo "No hi ha canvis per fer commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
