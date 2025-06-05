@@ -3,15 +3,17 @@ name: Actualitzar temperatures diàriament
 on:
   schedule:
     - cron: "59 23 * * *" # Cada dia a les 23:59
-  workflow_dispatch: # Per llançar-lo manualment
+  workflow_dispatch: # També es pot executar manualment
 
 jobs:
   update-weather:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clona el repositori
+      - name: Clona el repositori amb escriptura
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
 
       - name: Configura Python
         uses: actions/setup-python@v4
@@ -31,5 +33,5 @@ jobs:
           git config user.name "arnauRS13"
           git config user.email "arnauRS13@users.noreply.github.com"
           git add temp_*.json
-          git commit -m "Afegit arxiu de temperatura diària" || echo "Sense canvis"
-          git push https://arnauRS13:${{ secrets.PERSONAL_TOKEN }}@github.com/arnauRS13/T01-Bloc5-Meteo.git
+          git commit -m "Afegit arxiu de temperatura diària" || echo "No hi ha canvis per fer commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
