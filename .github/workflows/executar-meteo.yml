@@ -1,0 +1,35 @@
+name: Actualitzar temperatures diàriament
+
+on:
+  schedule:
+    - cron: "59 23 * * *" # Cada dia a les 23:59
+  workflow_dispatch: # Per llançar-lo manualment
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clona el repositori
+        uses: actions/checkout@v3
+
+      - name: Configura Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Instal·la dependències
+        run: |
+          pip install requests
+
+      - name: Executa el script meteo.py
+        run: |
+          python meteo.py
+
+      - name: Pujar fitxer .json al repositori
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add temp_*.json
+          git commit -m "Afegit arxiu de temperatura diària"
+          git push
